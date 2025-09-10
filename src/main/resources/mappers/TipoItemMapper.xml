@@ -5,7 +5,32 @@
   
 <mapper namespace="edu.unisabana.dyas.sampleprj.dao.mybatis.mappers.TipoItemMapper">
 
-    
+    <!-- ResultMap para TipoItem -->
+    <resultMap type="TipoItem" id="TipoItemResult">
+        <id property="id" column="id"/>
+        <result property="descripcion" column="descripcion"/>
+    </resultMap>
 
-                
+    <!-- Obtener todos los tipos -->
+    <select id="getTiposItems" resultMap="TipoItemResult">
+        SELECT id, descripcion
+        FROM VI_TIPOITEM
+    </select>
+
+    <!-- Obtener un tipo por id -->
+    <select id="getTipoItem" parameterType="map" resultMap="TipoItemResult">
+        SELECT id, descripcion
+        FROM VI_TIPOITEM
+        WHERE id = #{id}
+    </select>
+
+    <insert id="addTipoItem" parameterType="map">
+        INSERT INTO VI_TIPOITEM (id, descripcion)
+        VALUES (
+            (SELECT IFNULL(MAX(id), 0) + 1 FROM VI_TIPOITEM),
+            #{des}
+        )
+    </insert>
+
+         
 </mapper>

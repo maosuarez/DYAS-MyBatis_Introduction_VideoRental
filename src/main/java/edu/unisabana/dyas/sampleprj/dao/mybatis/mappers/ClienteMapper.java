@@ -12,7 +12,7 @@ import edu.unisabana.dyas.samples.entities.Cliente;
  */
 public interface ClienteMapper {
     
-    public Cliente consultarCliente(int id); 
+    public Cliente consultarCliente(@Param("idcli") int id); 
     
     /**
      * Registrar un nuevo item rentado asociado al cliente identificado
@@ -22,10 +22,10 @@ public interface ClienteMapper {
      * @param fechainicio
      * @param fechafin 
      */
-    public void agregarItemRentadoACliente(int id, 
-            int idit, 
-            Date fechainicio,
-            Date fechafin);
+    void agregarItemRentadoACliente(@Param("idcli") int idCliente,
+                                    @Param("idit") int idItem,
+                                    @Param("fechaIni") Date fechaInicio,
+                                    @Param("fechaFin") Date fechaFin);
 
     /**
      * Consultar todos los clientes

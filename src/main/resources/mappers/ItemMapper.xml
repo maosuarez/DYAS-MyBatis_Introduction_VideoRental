@@ -5,7 +5,60 @@
   
 <mapper namespace="edu.unisabana.dyas.sampleprj.dao.mybatis.mappers.ItemMapper">
 
+  <insert id="insertarItem" parameterType="map">
+      INSERT INTO VI_ITEMS (id, nombre, descripcion, fechalanzamiento, tarifaxdia, formatorenta, genero, TIPOITEM_id)
+      VALUES (
+          #{item.id},
+          #{item.nombre},
+          #{item.descripcion},
+          #{item.fechaLanzamiento},
+          #{item.tarifaxDia},
+          #{item.formatoRenta},
+          #{item.genero},
+          #{item.tipo.id}
+      );
+  </insert>
 
+  <resultMap type="Item" id="ItemResult">
+      <id property="id" column="item_id"/>
+      <result property="nombre" column="item_nombre"/>
+      <result property="descripcion" column="item_descripcion"/>
+      <result property="fechaLanzamiento" column="item_fechalanzamiento"/>
+      <result property="tarifaxDia" column="item_tarifaxdia"/>
+      <result property="formatoRenta" column="item_formatorenta"/>
+      <result property="genero" column="item_genero"/>
+      <association property="tipo" javaType="TipoItem" columnPrefix="tipoitem_"/>
+  </resultMap>
     
+  <select id="consultarItem" parameterType="map" resultMap="ItemResult">
+      SELECT 
+          i.id AS item_id,
+          i.nombre AS item_nombre,
+          i.descripcion AS item_descripcion,
+          datetime(i.fechalanzamiento) AS item_fechalanzamiento,
+          i.tarifaxdia AS item_tarifaxdia,
+          i.formatorenta AS item_formatorenta,
+          i.genero AS item_genero,
+          ti.id AS tipoitem_id,
+          ti.descripcion AS tipoitem_descripcion
+      FROM VI_ITEMS i
+      LEFT JOIN VI_TIPOITEM ti ON i.TIPOITEM_id = ti.id
+      WHERE i.id = #{idit}
+  </select>
+
+  <select id="consultarItems" resultMap="ItemResult">
+      SELECT 
+          i.id AS item_id,
+          i.nombre AS item_nombre,
+          i.descripcion AS item_descripcion,
+          datetime(i.fechalanzamiento) AS item_fechalanzamiento,
+          i.tarifaxdia AS item_tarifaxdia,
+          i.formatorenta AS item_formatorenta,
+          i.genero AS item_genero,
+          ti.id AS tipoitem_id,
+          ti.descripcion AS tipoitem_descripcion
+      FROM VI_ITEMS i
+      LEFT JOIN VI_TIPOITEM ti ON i.TIPOITEM_id = ti.id
+  </select>
     
 </mapper>
